@@ -40,6 +40,7 @@ public:
 	Cuboid(glm::vec3 position, float width, float height, float length, std::string textureName, float *texCoord);
 	void draw(Shader &shader);
 	void draw(Shader &shader, unsigned int winWidth, unsigned int winHeight);
+	void draw(Shader shader, glm::mat4 model);
 	void draw(Shader shader, glm::mat4 model, glm::mat4 view, glm::mat4 projection);
 	void setValues(glm::vec3 position, float width, float height, float length, std::string textureName, float *textCoord);
 	~Cuboid();

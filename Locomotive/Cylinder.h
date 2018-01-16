@@ -42,6 +42,7 @@ public:
 	Cylinder(glm::vec3 position, float radius, float height, unsigned int pieces, std::string textureBaseName, std::string textureSideName);
 	void draw(Shader &shader);
 	void draw(Shader &shader, unsigned int winWidth, unsigned int winHeight);
+	void draw(Shader shader, glm::mat4 model);
 	void draw(Shader, glm::mat4 model, glm::mat4 view, glm::mat4 projection);
 	void setValues(glm::vec3 position, float radius, float height, unsigned int pieces, std::string textureBaseName, std::string textureSideName);
 //	void setValues(glm::vec3 position, float width, float height, float length, std::string textureName, float *textCoord);

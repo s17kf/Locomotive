@@ -86,6 +86,7 @@ void Cuboid::draw(Shader &shader) {
 	glBindVertexArray(0);
 }
 
+
 void Cuboid::draw(Shader &shader, unsigned int winWidth, unsigned int winHeight) {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture);
@@ -119,6 +120,20 @@ void Cuboid::draw(Shader &shader, unsigned int winWidth, unsigned int winHeight)
 	glBindVertexArray(0);
 
 
+}
+
+void Cuboid::draw(Shader shader, glm::mat4 model) {
+	shader.setMat4("model", model);
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glUniform1i(glGetUniformLocation(shader.getID(), "Texture"), 0);
+
+
+	shader.use();
+	glBindVertexArray(VAO);
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(0);
 }
 
 void Cuboid::draw(Shader shader, glm::mat4 model, glm::mat4 view, glm::mat4 projection) {

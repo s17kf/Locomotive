@@ -42,17 +42,19 @@ void Locomotive::draw(Shader shader, unsigned int winWidth, unsigned int winHeig
 	//model = glm::translate(model, glm::vec3((float)glfwGetTime() / -20, 0,/* 0*/ (float)glfwGetTime() / 20));
 	model = glm::scale(model, glm::vec3(0.5, 0.5, 0.5));
 
-	glm::mat4 view;
-	// note that we're translating the scene in the reverse direction of where we want to move
-	view = glm::translate(view, glm::vec3(0.0f, 0.0f, -1.6f));
-	view = glm::rotate(view, glm::radians(30.f), glm::vec3(1.0, 1.0, 0.0));
 
-	glm::mat4 projection;
-	projection = glm::perspective(glm::radians(45.0f), (GLfloat)winWidth / (GLfloat)winHeight, 0.1f, 100.0f);
+	//!!!obsluga kamery w mainie
+	//glm::mat4 view;
+	//// note that we're translating the scene in the reverse direction of where we want to move
+	//view = glm::translate(view, glm::vec3(0.0f, 0.0f, -1.6f));
+	//view = glm::rotate(view, glm::radians(30.f), glm::vec3(1.0, 1.0, 0.0));
 
-	body->draw(shader, model, view, projection);
+	//glm::mat4 projection;
+	//projection = glm::perspective(glm::radians(45.0f), (GLfloat)winWidth / (GLfloat)winHeight, 0.1f, 100.0f);
+
+	body->draw(shader, model);
 	for (int i = 0; i < wheelsCount; i++)
-		wheels[i].draw(shader, model, view, projection);
+		wheels[i].draw(shader, model);
 }
 
 void Locomotive::moveX(float move) {
