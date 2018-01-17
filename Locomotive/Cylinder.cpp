@@ -6,6 +6,7 @@ Cylinder::Cylinder(glm::vec3 position, float radius, float height, unsigned int 
 
 void Cylinder::setValues(glm::vec3 position, float radius, float height, unsigned int pieces, std::string textureBaseName, std::string textureSideName) {
 	rotation = 0;
+	this->radius = radius;
 	bases = new CylinderBases(position, radius, height, pieces, textureBaseName);
 	side = new CylinderSide(position, radius, height, pieces, textureSideName);
 	this->position = position;
@@ -36,6 +37,17 @@ void Cylinder::draw(Shader &shader, unsigned int winWidth, unsigned int winHeigh
 	shader.setMat4("model", model);
 	shader.setMat4("view", view);
 	shader.setMat4("projection", projection);
+
+	bases->draw(shader);
+	side->draw(shader);
+}
+
+void Cylinder::draw(Shader shader, glm::mat4 model) {
+	model = glm::translate(model, position);
+	//model = glm::rotate(model, (float)glfwGetTime() * glm::radians(100.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	model = glm::rotate(model, rotation, glm::vec3(0, 0, 1));
+
+	shader.setMat4("model", model);
 
 	bases->draw(shader);
 	side->draw(shader);

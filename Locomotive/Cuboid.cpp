@@ -26,11 +26,13 @@ Cuboid::Cuboid(glm::vec3 position, float width, float height, float length, std:
 void Cuboid::setValues(glm::vec3 position, float width, float height, float length, std::string textureName, float *texCoord) {
 	unsigned int vertSize = 5;
 
-	this->positon = position;
+	this->position = position;
 	this->textureName = textureName;
 	this->width = width;
 	this->height = height;
 	this->length = length;
+
+	translation = glm::vec3(0, 0, 0);
 
 	std::cout << position.x << " " << position.y << " " << position.z << std::endl;
 	std::cout << width << " " << height << " " << length << std::endl;
@@ -86,6 +88,7 @@ void Cuboid::draw(Shader &shader) {
 	glBindVertexArray(0);
 }
 
+
 void Cuboid::draw(Shader &shader, unsigned int winWidth, unsigned int winHeight) {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture);
@@ -94,7 +97,7 @@ void Cuboid::draw(Shader &shader, unsigned int winWidth, unsigned int winHeight)
 	//glm::mat4 model = glm::mat4(1.0f);
 	glm::mat4 model;
 	//model = glm::rotate(model, glm::radians(30.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-	model = glm::translate(model,positon);
+	model = glm::translate(model,position);
 	model = glm::translate(model, glm::vec3((float)glfwGetTime() / 20, 0, (float)glfwGetTime() / 20));
 	model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
 	//model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -119,6 +122,24 @@ void Cuboid::draw(Shader &shader, unsigned int winWidth, unsigned int winHeight)
 	glBindVertexArray(0);
 
 
+}
+
+void Cuboid::draw(Shader shader, glm::mat4 model) {
+
+	//model = glm::translate(model, position + translation);
+	model = glm::translate(model, translation);
+	model = glm::translate(model, position);
+	shader.setMat4("model", model);
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glUniform1i(glGetUniformLocation(shader.getID(), "Texture"), 0);
+
+
+	shader.use();
+	glBindVertexArray(VAO);
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(0);
 }
 
 void Cuboid::draw(Shader shader, glm::mat4 model, glm::mat4 view, glm::mat4 projection) {
@@ -226,9 +247,9 @@ void Cuboid::generateVerticesArray(glm::vec3 position, unsigned int vertSize, fl
 
 
 
-//vertices[0] = vertices[3 * vertSize] = vertices[4 * vertSize] = vertices[7 * vertSize] = positon.x;	//left side
-//vertices[vertSize] = vertices[2 * vertSize] = vertices[5 * vertSize] = vertices[6 * vertSize] = positon.x + width;	//right side
-//vertices[0 + 1] = vertices[vertSize + 1] = vertices[4 * vertSize + 1] = vertices[5 * vertSize + 1] = positon.y;	//bottom side
-//vertices[2 * vertSize + 1] = vertices[3 * vertSize + 1] = vertices[6 * vertSize + 1] = vertices[7 * vertSize + 1] = positon.y + height;	//top side
-//vertices[0 + 2] = vertices[vertSize + 2] = vertices[2 * vertSize + 2] = vertices[3 * vertSize + 2] = positon.z;	//front side
-//vertices[4 * vertSize + 2] = vertices[5 * vertSize + 2] = vertices[6 * vertSize + 2] = vertices[7 * vertSize + 2] = positon.z - length;	//back side
+//vertices[0] = vertices[3 * vertSize] = vertices[4 * vertSize] = vertices[7 * vertSize] = position.x;	//left side
+//vertices[vertSize] = vertices[2 * vertSize] = vertices[5 * vertSize] = vertices[6 * vertSize] = position.x + width;	//right side
+//vertices[0 + 1] = vertices[vertSize + 1] = vertices[4 * vertSize + 1] = vertices[5 * vertSize + 1] = position.y;	//bottom side
+//vertices[2 * vertSize + 1] = vertices[3 * vertSize + 1] = vertices[6 * vertSize + 1] = vertices[7 * vertSize + 1] = position.y + height;	//top side
+//vertices[0 + 2] = vertices[vertSize + 2] = vertices[2 * vertSize + 2] = vertices[3 * vertSize + 2] = position.z;	//front side
+//vertices[4 * vertSize + 2] = vertices[5 * vertSize + 2] = vertices[6 * vertSize + 2] = vertices[7 * vertSize + 2] = position.z - length;	//back side
