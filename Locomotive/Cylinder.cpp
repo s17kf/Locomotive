@@ -6,6 +6,7 @@ Cylinder::Cylinder(glm::vec3 position, float radius, float height, unsigned int 
 
 void Cylinder::setValues(glm::vec3 position, float radius, float height, unsigned int pieces, std::string textureBaseName, std::string textureSideName) {
 	rotation = 0;
+	this->radius = radius;
 	bases = new CylinderBases(position, radius, height, pieces, textureBaseName);
 	side = new CylinderSide(position, radius, height, pieces, textureSideName);
 	this->position = position;

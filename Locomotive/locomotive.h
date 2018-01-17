@@ -11,6 +11,7 @@ class Locomotive {
 	glm::vec3 position;
 	Cuboid *body;
 	Cylinder *wheels;
+	Cuboid *balks;
 
 public:
 	Locomotive();

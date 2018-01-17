@@ -24,7 +24,8 @@ class Cuboid {
 	float width;
 	float height;
 	float length;
-	glm::vec3 positon;
+	glm::vec3 position;
+	glm::vec3 translation;
 	unsigned int VAO;
 	unsigned int VBO;
 	unsigned int EBO;
@@ -36,7 +37,7 @@ class Cuboid {
 	unsigned int indices[36];
 
 public:
-	Cuboid() :width(0), height(0), length(0), positon(0, 0, 0) {};
+	Cuboid() :width(0), height(0), length(0), position(0, 0, 0), translation(0, 0, 0) {};
 	Cuboid(glm::vec3 position, float width, float height, float length, std::string textureName, float *texCoord);
 	void draw(Shader &shader);
 	void draw(Shader &shader, unsigned int winWidth, unsigned int winHeight);
@@ -44,6 +45,15 @@ public:
 	void draw(Shader shader, glm::mat4 model, glm::mat4 view, glm::mat4 projection);
 	void setValues(glm::vec3 position, float width, float height, float length, std::string textureName, float *textCoord);
 	~Cuboid();
+	void setTranslation(glm::vec3 translation) { this->translation = translation; }
+	void setPosition(glm::vec3 position) { this->position = position; }
+	void setPositionX(float x) { position.x = x; }
+	void setPositionY(float y) { position.y = y; }
+	void setPositionZ(float z) { position.z = z; }
+	void setTranslationX(float x) { translation.x = x; }
+	void setTranslationY(float y) { translation.y = y; }
+	void setTranslationZ(float z) { translation.z = z; }
+	
 
 private:
 	void generateVerticesArray(glm::vec3 position, unsigned int vertSize, float*texCoord);

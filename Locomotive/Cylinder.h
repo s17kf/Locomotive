@@ -35,10 +35,11 @@ class Cylinder {
 	CylinderSide *side;
 	glm::vec3 position;
 	float rotation;
+	float radius;
 
 
 public:
-	Cylinder() :rotation(0) {};
+	Cylinder() :rotation(0), radius(0) {};
 	Cylinder(glm::vec3 position, float radius, float height, unsigned int pieces, std::string textureBaseName, std::string textureSideName);
 	void draw(Shader &shader);
 	void draw(Shader &shader, unsigned int winWidth, unsigned int winHeight);
@@ -47,9 +48,9 @@ public:
 	void setValues(glm::vec3 position, float radius, float height, unsigned int pieces, std::string textureBaseName, std::string textureSideName);
 //	void setValues(glm::vec3 position, float width, float height, float length, std::string textureName, float *textCoord);
 	~Cylinder();
-	void rotate(float angle) {
-		rotation += angle;
-	}
+	void rotate(float angle) { rotation += angle; }
+	float getRadius() { return radius; }
+	float getRotation() { return rotation; }
 private:
 };
 
