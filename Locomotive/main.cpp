@@ -15,6 +15,7 @@ using namespace std;
 #include "locomotive.h"
 #include "camera.h"
 #include "simpleCuboid.h"
+#include "light.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -34,7 +35,7 @@ float lastFrame = 0;
 
 
 Locomotive *locomotive;
-SimpleCuboid *lamp;
+Light *lamp;
 
 
 int main()
@@ -82,7 +83,8 @@ int main()
 	//CylinderBases cylinderBases(glm::vec3(0.1, 0.1, 0.1), 0.15, 0.1, 24, "kolo.jpg");
 	
 	locomotive = new Locomotive(0.5, 0.2, 0.8, 0.15, "deska.png", "kolo.jpg", "black.jpg");
-	lamp = new SimpleCuboid(glm::vec3(0, 1, 0), 0.2, 0.2, 0.2);
+	lamp = new Light(glm::vec3(0, 1, 0), 0.2, 0.2, 0.2);
+	//lamp - new Light();
 	//Locomotive lokomotywa2;
 	//main loop
 	while (!glfwWindowShouldClose(window))
@@ -166,7 +168,22 @@ void processInput(GLFWwindow *window)
 	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
 		camera.ProcessKeyboard(UP, deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
-		camera.ProcessKeyboard(DOWN, deltaTime);
+		camera.ProcessKeyboard(DOWN, deltaTime); 
+	
+	//light move
+	if (glfwGetKey(window, GLFW_KEY_KP_6) == GLFW_PRESS)
+		lamp->moveX(deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_KP_4) == GLFW_PRESS)
+		lamp->moveX(-deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_KP_9) == GLFW_PRESS)
+		lamp->moveY(deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_KP_3) == GLFW_PRESS)
+		lamp->moveY(-deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_KP_8) == GLFW_PRESS)
+		lamp->moveZ(-deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_KP_2) == GLFW_PRESS)
+		lamp->moveZ(deltaTime);
+
 }
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)

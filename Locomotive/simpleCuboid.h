@@ -21,6 +21,7 @@
 
 class SimpleCuboid {
 
+protected:
 	float width;
 	float height;
 	float length;

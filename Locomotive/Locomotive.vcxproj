@@ -152,6 +152,7 @@
     <ClInclude Include="Cylinder.h" />
     <ClInclude Include="cylinderBases.h" />
     <ClInclude Include="cylinderSide.h" />
+    <ClInclude Include="light.h" />
     <ClInclude Include="locomotive.h" />
     <ClInclude Include="shprogram.h" />
     <ClInclude Include="simpleCuboid.h" />
