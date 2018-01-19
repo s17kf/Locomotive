@@ -1,5 +1,6 @@
 #define GLEW_STATIC
 //#include <glad/glad.h>
+#include "Const.h"
 #include <GL/glew.h>
 #include "shprogram.h"
 #include <GLFW/glfw3.h>

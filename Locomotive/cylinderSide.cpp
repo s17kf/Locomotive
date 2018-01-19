@@ -96,13 +96,13 @@ void CylinderSide::generateVerticesArray(unsigned int vertSize) {
 		//left vert
 		vertices[i*vertSize] = radius*sin(i / 2 * alpha);	//x
 		vertices[i*vertSize + 1] = radius*cos(i / 2 * alpha);	//y
-		vertices[i*vertSize + 2] = 0.0;	//z
+		vertices[i*vertSize + 2] = height / 2;	//z
 		vertices[i*vertSize + 3] = 0.0;	//tex x
 		vertices[i*vertSize + 4] = 0.0;	//tex y
 										//right vert
 		vertices[(i + 1)*vertSize] = radius*sin((i + 2) / 2 * alpha);	//x
 		vertices[(i + 1)*vertSize + 1] = radius*cos((i + 2) / 2 * alpha);	//y
-		vertices[(i + 1)*vertSize + 2] = 0.0;	//z
+		vertices[(i + 1)*vertSize + 2] = height / 2;	//z
 		vertices[(i + 1)*vertSize + 3] = 1.0;	//tex x
 		vertices[(i + 1)*vertSize + 4] = 0.0;	//tex y
 	}
@@ -113,13 +113,13 @@ void CylinderSide::generateVerticesArray(unsigned int vertSize) {
 		//left vert
 		vertices[i*vertSize] = radius*sin(i / 2 * alpha);	//x
 		vertices[i*vertSize + 1] = radius*cos(i / 2 * alpha);	//y
-		vertices[i*vertSize + 2] = -height;	//z
+		vertices[i*vertSize + 2] = -height / 2;	//z
 		vertices[i*vertSize + 3] = 0.0;	//tex x
 		vertices[i*vertSize + 4] = 1.0;	//tex y
 										//right vert
 		vertices[(i + 1)*vertSize] = radius*sin((i + 2) / 2 * alpha);	//x
 		vertices[(i + 1)*vertSize + 1] = radius*cos((i + 2) / 2 * alpha);	//y
-		vertices[(i + 1)*vertSize + 2] = -height;	//z
+		vertices[(i + 1)*vertSize + 2] = -height / 2;	//z
 		vertices[(i + 1)*vertSize + 3] = 1.0;	//tex x
 		vertices[(i + 1)*vertSize + 4] = 1.0;	//tex y
 	}

@@ -3,6 +3,7 @@
 #ifndef LOCOMOTIVE_H
 #define LOCOMOTIVE_H
 
+#include "Const.h"
 #include "Cuboid.h"
 #include "Cylinder.h"
 
