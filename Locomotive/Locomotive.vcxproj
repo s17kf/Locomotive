@@ -143,6 +143,7 @@
     <ClCompile Include="locomotive.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="shprogram.cpp" />
+    <ClCompile Include="simpleCuboid.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h" />
@@ -153,8 +154,11 @@
     <ClInclude Include="cylinderSide.h" />
     <ClInclude Include="locomotive.h" />
     <ClInclude Include="shprogram.h" />
+    <ClInclude Include="simpleCuboid.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="light.frag" />
+    <None Include="light.vert" />
     <None Include="locomotive.frag" />
     <None Include="Lokomotywa.vcxproj" />
     <None Include="locomotive.vert" />

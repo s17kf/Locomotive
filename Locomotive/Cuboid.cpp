@@ -1,6 +1,11 @@
 #include "Cuboid.h"
 
-unsigned int indicesInitializer[] = {
+
+const unsigned int vertSize = 5;
+const unsigned int verticesSize = vertSize * 24;
+const unsigned int indicesSize = 36;
+
+const unsigned int indicesInitializer[] = {
 	0, 1, 2,
 	0, 2, 3,
 	4, 5, 6,
@@ -24,8 +29,8 @@ Cuboid::Cuboid(glm::vec3 position, float width, float height, float length, std:
 }
 
 void Cuboid::setValues(glm::vec3 position, float width, float height, float length, std::string textureName, float *texCoord) {
-	unsigned int vertSize = 5;
-
+	vertices = new float[verticesSize];
+	indices = new unsigned int[indicesSize];
 	this->position = position;
 	this->textureName = textureName;
 	this->width = width;
@@ -50,19 +55,19 @@ void Cuboid::setValues(glm::vec3 position, float width, float height, float leng
 	glBindVertexArray(VAO);
 	// 0. copy our vertices array in a buffer for OpenGL to use
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * verticesSize, vertices, GL_STATIC_DRAW);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indicesSize, indices, GL_STATIC_DRAW);
 
 	// position attribute
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, vertSize * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 	// color attribute
 	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
 	//glEnableVertexAttribArray(1);
 	// vertex texture coordinates
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, vertSize * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(2);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -97,7 +102,7 @@ void Cuboid::draw(Shader &shader, unsigned int winWidth, unsigned int winHeight)
 	//glm::mat4 model = glm::mat4(1.0f);
 	glm::mat4 model;
 	//model = glm::rotate(model, glm::radians(30.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-	model = glm::translate(model,position);
+	model = glm::translate(model, position);
 	model = glm::translate(model, glm::vec3((float)glfwGetTime() / 20, 0, (float)glfwGetTime() / 20));
 	model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
 	//model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -127,6 +132,8 @@ void Cuboid::draw(Shader &shader, unsigned int winWidth, unsigned int winHeight)
 void Cuboid::draw(Shader shader, glm::mat4 model) {
 
 	//model = glm::translate(model, position + translation);
+
+	shader.use();
 	model = glm::translate(model, translation);
 	model = glm::translate(model, position);
 	shader.setMat4("model", model);
@@ -136,7 +143,6 @@ void Cuboid::draw(Shader shader, glm::mat4 model) {
 	glUniform1i(glGetUniformLocation(shader.getID(), "Texture"), 0);
 
 
-	shader.use();
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
@@ -156,11 +162,13 @@ void Cuboid::draw(Shader shader, glm::mat4 model, glm::mat4 view, glm::mat4 proj
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
-	
+
 }
 
 
 Cuboid::~Cuboid() {
+	delete[] vertices;
+	delete[] indices;
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
 	glDeleteBuffers(1, &EBO);
@@ -183,7 +191,7 @@ void Cuboid::generateVerticesArray(glm::vec3 position, unsigned int vertSize, fl
 	vertices[4] = vertices[vertSize + 4] = 0.0f;//y bottom
 	vertices[2 * vertSize + 4] = vertices[3 * vertSize + 4] = texCoord[1];//y top
 
-	//back side
+																		  //back side
 	vertices[4 * vertSize] = vertices[7 * vertSize] = position.x - width / 2;
 	vertices[5 * vertSize] = vertices[6 * vertSize] = position.x + width / 2;
 	vertices[4 * vertSize + 1] = vertices[5 * vertSize + 1] = position.y - height / 2;
@@ -195,7 +203,7 @@ void Cuboid::generateVerticesArray(glm::vec3 position, unsigned int vertSize, fl
 	vertices[4 * vertSize + 4] = vertices[5 * vertSize + 4] = 0.0;//y bottom
 	vertices[6 * vertSize + 4] = vertices[7 * vertSize + 4] = texCoord[3];//y top
 
-	//left side
+																		  //left side
 	vertices[8 * vertSize] = vertices[9 * vertSize] = vertices[10 * vertSize] = vertices[11 * vertSize] = position.x - width / 2;
 	vertices[8 * vertSize + 1] = vertices[9 * vertSize + 1] = position.y - height / 2;
 	vertices[10 * vertSize + 1] = vertices[11 * vertSize + 1] = position.y + height / 2;
@@ -207,7 +215,7 @@ void Cuboid::generateVerticesArray(glm::vec3 position, unsigned int vertSize, fl
 	vertices[8 * vertSize + 4] = vertices[9 * vertSize + 4] = 0.0;//y bottom
 	vertices[10 * vertSize + 4] = vertices[11 * vertSize + 4] = texCoord[5];//y top
 
-	//right side
+																			//right side
 	vertices[12 * vertSize] = vertices[13 * vertSize] = vertices[14 * vertSize] = vertices[15 * vertSize] = position.x + width / 2;
 	vertices[12 * vertSize + 1] = vertices[13 * vertSize + 1] = position.y - height / 2;
 	vertices[14 * vertSize + 1] = vertices[15 * vertSize + 1] = position.y + height / 2;
@@ -219,7 +227,7 @@ void Cuboid::generateVerticesArray(glm::vec3 position, unsigned int vertSize, fl
 	vertices[12 * vertSize + 4] = vertices[13 * vertSize + 4] = 0.0;//y bottom
 	vertices[14 * vertSize + 4] = vertices[15 * vertSize + 4] = texCoord[7];//y top
 
-	//bottom side
+																			//bottom side
 	vertices[16 * vertSize] = vertices[19 * vertSize] = position.x - width / 2;
 	vertices[17 * vertSize] = vertices[18 * vertSize] = position.x + width / 2;
 	vertices[16 * vertSize + 1] = vertices[17 * vertSize + 1] = vertices[18 * vertSize + 1] = vertices[19 * vertSize + 1] = position.y - height / 2;
@@ -231,7 +239,7 @@ void Cuboid::generateVerticesArray(glm::vec3 position, unsigned int vertSize, fl
 	vertices[18 * vertSize + 4] = vertices[19 * vertSize + 4] = 0.0;//y bottom
 	vertices[16 * vertSize + 4] = vertices[17 * vertSize + 4] = texCoord[9];//y top
 
-	//top side
+																			//top side
 	vertices[20 * vertSize] = vertices[23 * vertSize] = position.x - width / 2;
 	vertices[21 * vertSize] = vertices[22 * vertSize] = position.x + width / 2;
 	vertices[20 * vertSize + 1] = vertices[21 * vertSize + 1] = vertices[22 * vertSize + 1] = vertices[23 * vertSize + 1] = position.y + height / 2;

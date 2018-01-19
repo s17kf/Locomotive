@@ -44,7 +44,6 @@ void Cylinder::draw(Shader &shader, unsigned int winWidth, unsigned int winHeigh
 
 void Cylinder::draw(Shader shader, glm::mat4 model) {
 	model = glm::translate(model, position);
-	//model = glm::rotate(model, (float)glfwGetTime() * glm::radians(100.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::rotate(model, rotation, glm::vec3(0, 0, 1));
 
 	shader.setMat4("model", model);

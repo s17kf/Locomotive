@@ -14,6 +14,7 @@ using namespace std;
 #include "Cylinder.h"
 #include "locomotive.h"
 #include "camera.h"
+#include "simpleCuboid.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -33,6 +34,7 @@ float lastFrame = 0;
 
 
 Locomotive *locomotive;
+SimpleCuboid *lamp;
 
 
 int main()
@@ -71,6 +73,7 @@ int main()
 	//glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
 	Shader ourShader("locomotive.vert", "locomotive.frag");
+	Shader lampShader("light.vert", "light.frag");
 	//Shader cylinderShader("locomotive.vert", "locomotive.frag");
 
 	float cuboid1TexCoord[] = { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 };
@@ -79,6 +82,7 @@ int main()
 	//CylinderBases cylinderBases(glm::vec3(0.1, 0.1, 0.1), 0.15, 0.1, 24, "kolo.jpg");
 	
 	locomotive = new Locomotive(0.5, 0.2, 0.8, 0.15, "deska.png", "kolo.jpg", "black.jpg");
+	lamp = new SimpleCuboid(glm::vec3(0, 1, 0), 0.2, 0.2, 0.2);
 	//Locomotive lokomotywa2;
 	//main loop
 	while (!glfwWindowShouldClose(window))
@@ -112,6 +116,12 @@ int main()
 		ourShader.setMat4("projection", projection);
 
 		locomotive->draw(ourShader, WIDTH, HEIGHT);
+
+		lampShader.setMat4("view", view);
+		lampShader.setMat4("projection", projection);
+		glm::mat4 model;// = glm::mat4();
+		model = glm::scale(model, glm::vec3(0.2));
+		lamp->draw(lampShader, model);
 		//lokomotywa2.draw(ourShader, WIDTH, HEIGHT);
 		//cuboid.draw(ourShader);
 		//cuboid1.draw(ourShader, WIDTH, HEIGHT);
@@ -128,6 +138,7 @@ int main()
 	glfwTerminate();
 
 	delete locomotive;
+	delete lamp;
 
 	return 0;
 }

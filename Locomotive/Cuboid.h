@@ -29,12 +29,12 @@ class Cuboid {
 	unsigned int VAO;
 	unsigned int VBO;
 	unsigned int EBO;
-	float vertices[120];
+	float *vertices;
 	unsigned int texture;
 	std::string textureName;
 	//Shader shader;
 
-	unsigned int indices[36];
+	unsigned int *indices;
 
 public:
 	Cuboid() :width(0), height(0), length(0), position(0, 0, 0), translation(0, 0, 0) {};

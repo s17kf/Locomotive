@@ -50,6 +50,9 @@
     <ClCompile Include="locomotive.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
+    <ClCompile Include="simpleCuboid.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cuboid.h">
@@ -76,10 +79,15 @@
     <ClInclude Include="Const.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
+    <ClInclude Include="simpleCuboid.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Lokomotywa.vcxproj" />
     <None Include="locomotive.vert" />
     <None Include="locomotive.frag" />
+    <None Include="light.frag" />
+    <None Include="light.vert" />
   </ItemGroup>
 </Project>
