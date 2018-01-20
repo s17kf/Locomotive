@@ -36,10 +36,13 @@
     <Image Include="treeCrown.jpg">
       <Filter>Pliki zasobów</Filter>
     </Image>
+    <Image Include="road.jpg">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
     <Image Include="back.jpg">
       <Filter>Pliki zasobów</Filter>
     </Image>
-    <Image Include="bottom.jpg">
+    <Image Include="base.jpg">
       <Filter>Pliki zasobów</Filter>
     </Image>
     <Image Include="front.jpg">
@@ -52,9 +55,6 @@
       <Filter>Pliki zasobów</Filter>
     </Image>
     <Image Include="top.jpg">
-      <Filter>Pliki zasobów</Filter>
-    </Image>
-    <Image Include="road.jpg">
       <Filter>Pliki zasobów</Filter>
     </Image>
   </ItemGroup>
@@ -87,6 +87,9 @@
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
     <ClCompile Include="tree.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="skybox.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
   </ItemGroup>

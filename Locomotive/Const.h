@@ -4,7 +4,9 @@
 #define MYCONST_H
 
 #include <iostream>
+#include <vector>
 
+const float SPEED_MULTTIPLIER = 3.5;
 const unsigned int WHEEL_PIECES = 24;
 const unsigned int WHEELS_COUNT = 4;
 const float WHEEL_WIDTH = 0.12;
@@ -26,6 +28,9 @@ const std::string BODY_TEX_NAME = "deska.png";
 const std::string WHEEL_TEX_NAME1 = "kolo.jpg";
 const std::string WHEEL_TEX_NAME2 = "black.jpg";
 const std::string BALK_TEX_NAME = "silver.jpg";
+const std::vector<std::string> WALLS_TEX_NAMES{ "right.jpg","left.jpg","top.jpg","bottom.jpg","back.jpg","front.jpg" };
+
+
 
 /*
 * textCoord: {front side, back side, left, right, bottom, top side}
@@ -49,6 +54,10 @@ const unsigned int TREE_CROWN_PIECES = 12;
 const unsigned int TREE_CROWN_LEVELS_C = 5;
 const std::string TREE_TRUNK_TEX = "treeTrunk.jpg";
 const std::string TREE_CROWN_TEX = "treeCrown.jpg";
+
+//walls parameters
+const unsigned int WALLS_COUNTER = 6;
+const float WALL_TEX_COORD[] = { 0,1,0,1 };
 
 
 #endif // !CONST_H

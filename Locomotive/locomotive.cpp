@@ -48,6 +48,7 @@ void Locomotive::draw(Shader shader, glm::mat4 model) {
 }
 
 void Locomotive::moveX(float move) {
+	move *= SPEED_MULTTIPLIER;
 	position.x += move;
 	for (int i = 0; i < WHEELS_COUNT; ++i)
 		wheels[i].rotateX(-move / wheels[i].getRadius());

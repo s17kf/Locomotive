@@ -6,19 +6,28 @@
 #include <GL/glew.h>
 #include <SOIL.h>
 #include <iostream>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <vector>
+#include "shprogram.h"
 
 class Skybox {
-	float vertices[108];
 	unsigned int VAO;
 	unsigned int VBO;
+	unsigned int cubemapTexture;
+	float *vertices;
 
 
 
 public:
+	Skybox(std::vector<std::string> skyboxTexNames);
+	~Skybox() { delete[] vertices; }
+	void draw(Shader shader, glm::mat4 model);
 
 
 private:
-	unsigned int loadCubemap(vector<std::string> faces) {
+	unsigned int loadCubemap(std::vector<std::string> faces) {
 		unsigned int textureID;
 		glGenTextures(1, &textureID);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);

@@ -131,9 +131,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <Image Include="back.jpg" />
+    <Image Include="base.jpg" />
     <Image Include="black.jpg" />
     <Image Include="black2.jpg" />
-    <Image Include="bottom.jpg" />
     <Image Include="deska.png" />
     <Image Include="front.jpg" />
     <Image Include="kolo.jpg" />
@@ -155,6 +155,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="shprogram.cpp" />
     <ClCompile Include="simpleCuboid.cpp" />
+    <ClCompile Include="skybox.cpp" />
     <ClCompile Include="tree.cpp" />
   </ItemGroup>
   <ItemGroup>

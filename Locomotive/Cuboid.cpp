@@ -107,27 +107,6 @@ void Cuboid::draw(Shader shader, glm::mat4 model) {
 	glBindVertexArray(0);
 }
 
-//void Cuboid::draw(Shader shader, glm::mat4 model, glm::mat4 view, glm::mat4 projection) {
-//	
-//	glActiveTexture(GL_TEXTURE0);
-//	glBindTexture(GL_TEXTURE_2D, texture);
-//	glUniform1i(glGetUniformLocation(shader.getID(), "Texture"), 0);
-//	model = glm::translate(model, translation);
-//	model = glm::translate(model, position);
-//
-//	shader.use();
-//	shader.setMat4("model", model);
-//	shader.setMat4("view", view);
-//	shader.setMat4("projection", projection);
-//
-//
-//
-//	glBindVertexArray(VAO);
-//	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-//	glBindVertexArray(0);
-//
-//}
-
 
 Cuboid::~Cuboid() {
 	delete[] vertices;

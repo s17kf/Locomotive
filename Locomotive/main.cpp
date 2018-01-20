@@ -18,6 +18,7 @@ using namespace std;
 #include "simpleCuboid.h"
 #include "light.h"
 #include "tree.h"
+#include "skybox.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -80,6 +81,7 @@ int main()
 	Shader ourShader("locomotive.vert", "locomotive.frag");
 	Shader lampShader("light.vert", "light.frag");
 	Shader lightedObjectShader("lightedObject.vert", "lightedObject.frag");
+	Shader skyboxShader("skybox.vert", "skybox.frag");
 
 	//lightedObjectShader.use();
 	lightedObjectShader.setInt("material.diffuse", 0);
@@ -100,6 +102,9 @@ int main()
 	}
 
 	Cuboid *platform = new Cuboid(glm::vec3(0, -PLATFORM_HEIGHT / 2,0), PLATFORM_LENGTH, PLATFORM_HEIGHT, PLATFORM_WIDTH, PLATFORM_TEX_NAME, PLATFORM_TEX_COORD);
+	
+	Skybox *skybox = new Skybox(WALLS_TEX_NAMES);
+	
 
 	//Cuboid *lightedCuboid = new Cuboid(glm::vec3(-1, 2, -1), 0.5, 0.6, 0.4, "deska.png", BALK_TEX_COORD);
 	//Cylinder *lightedCylinder = new Cylinder(glm::vec3(1, 2, -1), 0.6, 0.2, 12, "kolo.jpg", "black2.jpg");
@@ -145,13 +150,20 @@ int main()
 
 		platform->draw(lightedObjectShader, model);
 
-
-
 		lampShader.use();
 		lampShader.setMat4("view", view);
 		lampShader.setMat4("projection", projection);
 
 		lamp->draw(lampShader, model);
+
+		skyboxShader.use();
+		view = glm::mat4(glm::mat3(camera.GetViewMatrix()));
+		skyboxShader.setMat4("view", view);
+		skyboxShader.setMat4("projection", projection);
+
+		skybox->draw(skyboxShader, glm::mat4());
+
+
 
 		glfwSwapBuffers(window);
 	}
@@ -159,12 +171,11 @@ int main()
 
 	glfwTerminate();
 
+	delete skybox;
 	delete locomotive;
 	delete lamp;
 	delete[] trees;
 	delete platform;
-	//delete lightedCuboid;
-	//delete lightedCylinder;
 
 //	system("PAUSE");
 	return 0;
@@ -174,7 +185,6 @@ void processInput(GLFWwindow *window)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
-	deltaTime *= 3;
 	
 	//locomotive move
 	if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS)
