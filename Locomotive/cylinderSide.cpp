@@ -2,8 +2,6 @@
 
 CylinderSide::CylinderSide(glm::vec3 position, float radius, float height, unsigned int pieces, std::string textureName) {
 	unsigned int vertSize = 8;
-	//unsigned int verticesCount = 6 * pieces;
-	//unsigned int indicesCount = 6 * pieces;
 	unsigned int verticesCount = 4*pieces;
 	indicesCount = 6 * pieces;
 
@@ -12,10 +10,6 @@ CylinderSide::CylinderSide(glm::vec3 position, float radius, float height, unsig
 	this->pieces = pieces;
 	this->position = position;
 	this->textureName = textureName;
-	//vertices = new float[pieces * 4 + 2 * (pieces * 2 + 1)];
-	//vertices = new float[vertSize*(2 * (pieces * 2 + 1))];
-	//vertices = new float[5 * (6 * pieces)];
-	//indices = new unsigned int[6 * pieces];
 	vertices = new float[vertSize * verticesCount];
 	indices = new unsigned int[indicesCount];
 	rotationX = 0;
@@ -57,8 +51,6 @@ CylinderSide::CylinderSide(glm::vec3 position, float radius, float height, unsig
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	texture = LoadMipmapTexture(GL_TEXTURE0, textureName.c_str());
-
-
 }
 
 void CylinderSide::draw(Shader &shader, glm::mat4 model) {
@@ -76,26 +68,8 @@ void CylinderSide::draw(Shader &shader, glm::mat4 model) {
 	glBindVertexArray(0);
 }
 
-//void CylinderSide::draw(Shader &shader, unsigned int winWidth, unsigned int winHeight) {
-//
-//	glActiveTexture(GL_TEXTURE0);
-//	glBindTexture(GL_TEXTURE_2D, texture);
-//	glUniform1i(glGetUniformLocation(shader.getID(), "Texture"), 0);
-//
-//	
-//
-//
-//	shader.use();
-//	glBindVertexArray(VAO);
-//	glDrawElements(GL_TRIANGLES, indicesCount, GL_UNSIGNED_INT, 0);
-//	glBindVertexArray(0);
-//
-//
-//}
-
 void CylinderSide::generateVerticesArray(unsigned int vertSize) {
 	float alpha = glm::radians((float)360.0 / pieces);
-	std::cout << "alpha: " << alpha << std::endl;
 	//cylinder side
 	//front circle
 	//for (int i = 0; i < 2 * pieces; i += 2) {

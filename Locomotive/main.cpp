@@ -90,14 +90,16 @@ int main()
 
 	//CylinderBases cylinderBases(glm::vec3(0.1, 0.1, 0.1), 0.15, 0.1, 24, "kolo.jpg");
 	
-	locomotive = new Locomotive(0.5, 0.2, 0.8, 0.15);
+	locomotive = new Locomotive(LOC_WIDTH, LOC_HEIGHT, LOC_LENGTH, WHEEL_RADIUS);
 	lamp = new Light(glm::vec3(0, 0.5, 0), 0.02, 0.02, 0.02);
 
-	Tree *tree = new Tree[TREES_COUNTER_1];
+	Tree *trees = new Tree[TREES_COUNTER_1];
 	for (int i = 0; i < TREES_COUNTER_1; ++i) {
 		int z = rand() % 10;
-		tree[i].setValues(glm::vec3(8 - i * 15, 0, z < 7 ? -10 : 5), 8, 1, TREE_CROWN_LEVELS_C, TREE_TRUNK_TEX, TREE_CROWN_TEX);
+		trees[i].setValues(glm::vec3(-240 + i*20, 0.1, z < 7 ? -10 : 10), 8, 1, TREE_CROWN_LEVELS_C, TREE_TRUNK_TEX, TREE_CROWN_TEX);
 	}
+
+	Cuboid *platform = new Cuboid(glm::vec3(0, -PLATFORM_HEIGHT / 2,0), PLATFORM_LENGTH, PLATFORM_HEIGHT, PLATFORM_WIDTH, PLATFORM_TEX_NAME, PLATFORM_TEX_COORD);
 
 	//Cuboid *lightedCuboid = new Cuboid(glm::vec3(-1, 2, -1), 0.5, 0.6, 0.4, "deska.png", BALK_TEX_COORD);
 	//Cylinder *lightedCylinder = new Cylinder(glm::vec3(1, 2, -1), 0.6, 0.2, 12, "kolo.jpg", "black2.jpg");
@@ -121,51 +123,35 @@ int main()
 		glClearColor(0.1f, 0.2f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
-		//cylinderBases.draw(ourShader, WIDTH, HEIGHT);
-
 		// camera/view transformation
 		glm::mat4 view = camera.GetViewMatrix();
 		ourShader.setMat4("view", view);
 		// pass projection matrix to shader
 		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
-		ourShader.use();
-		ourShader.setMat4("projection", projection);
 
-		ourShader.setMat4("view", view);
+		glm::mat4 model;// = glm::mat4();
+		model = glm::scale(model, glm::vec3(0.4));
+
 		lightedObjectShader.use();
 		lightedObjectShader.setMat4("view", view);
 		lightedObjectShader.setMat4("projection", projection);
 		setLightParameters(lightedObjectShader);
-		locomotive->draw(lightedObjectShader, WIDTH, HEIGHT);
+
+	
+		locomotive->draw(lightedObjectShader, model);
+
+		for(int i=0;i<TREES_COUNTER_1;++i)
+			trees[i].draw(lightedObjectShader, model);
+
+		platform->draw(lightedObjectShader, model);
+
+
 
 		lampShader.use();
 		lampShader.setMat4("view", view);
 		lampShader.setMat4("projection", projection);
-		glm::mat4 model;// = glm::mat4();
-		//model = glm::scale(model, glm::vec3(0.2));
-		lamp->draw(lampShader, model);
-		
-		lightedObjectShader.use();
-		lightedObjectShader.setMat4("view", view);
-		lightedObjectShader.setMat4("projection", projection);
-		for(int i=0;i<TREES_COUNTER_1;++i)
-			tree[i].draw(lightedObjectShader, glm::mat4());
 
-		
-		//lightedObjectShader.setMat4("view", view);
-		//lightedObjectShader.setMat4("projection", projection);
-		//model = glm::scale(model, glm::vec3(0.2));
-		//lightedCuboid->draw(lightedObjectShader, model);
-		//lightedCylinder->draw(lightedObjectShader, model);
-		//lokomotywa2.draw(ourShader, WIDTH, HEIGHT);
-		//cuboid.draw(ourShader);
-		//cuboid1.draw(ourShader, WIDTH, HEIGHT);
-		//cuboid2.draw(ourShader, WIDTH, HEIGHT);
-		//cuboid3.draw(ourShader, WIDTH, HEIGHT);
-		//for (int i = 0; i < 10; ++i)
-		//	cylinders[i].draw(ourShader, WIDTH, HEIGHT);
-		//cylinder.draw(ourShader, WIDTH, HEIGHT);
+		lamp->draw(lampShader, model);
 
 		glfwSwapBuffers(window);
 	}
@@ -175,7 +161,8 @@ int main()
 
 	delete locomotive;
 	delete lamp;
-	delete[] tree;
+	delete[] trees;
+	delete platform;
 	//delete lightedCuboid;
 	//delete lightedCylinder;
 
@@ -187,6 +174,7 @@ void processInput(GLFWwindow *window)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
+	deltaTime *= 3;
 	
 	//locomotive move
 	if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS)
@@ -257,38 +245,4 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 void setLightParameters(Shader& shader) {
 	shader.setVec3("lightPos", lamp->getPosition());
 	shader.setVec3("lightColor", glm::vec3(1));
-	//shader.setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
-	//shader.setVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
-	//shader.setVec3("material.specular", 0.5f, 0.5f, 0.5f);
-	//shader.setFloat("material.shininess", 32.0f);
-
-	//// light properties
-	//shader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
-	//shader.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
-	//shader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
-
-	//shader.setVec3("lightPos", lamp->getPosition());
-	//shader.setVec3("viewPos", camera.Position);
-
-	////shader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
-	////shader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
 }
-
-//GLuint LoadMipmapTexture(GLuint texId, const char* fname)
-//{
-//	int width, height;
-//	unsigned char* image = SOIL_load_image(fname, &width, &height, 0, SOIL_LOAD_RGB);
-//	if (image == nullptr)
-//		throw exception("Failed to load texture file");
-//
-//	GLuint texture;
-//	glGenTextures(1, &texture);
-//
-//	glActiveTexture(texId);
-//	glBindTexture(GL_TEXTURE_2D, texture);
-//	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
-//	glGenerateMipmap(GL_TEXTURE_2D);
-//	SOIL_free_image_data(image);
-//	glBindTexture(GL_TEXTURE_2D, 0);
-//	return texture;
-//}

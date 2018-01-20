@@ -18,7 +18,7 @@ public:
 	Locomotive();
 	Locomotive(float width, float height, float length, float radius);
 	~Locomotive();
-	void draw(Shader shader, unsigned int winWidth, unsigned int winHeight);
+	void draw(Shader shader, glm::mat4 model);
 	void moveX(float move);
 
 

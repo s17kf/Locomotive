@@ -21,7 +21,7 @@ Locomotive::Locomotive() {
 * radius - wheel radius
 */
 Locomotive::Locomotive(float width, float height, float length, float radius) {
-	position = glm::vec3(0, 0, 0);
+	position = glm::vec3(START_X, START_Y, START_Z);
 	body = new Cuboid(glm::vec3(0, 0, 0), length, height, width, BODY_TEX_NAME, BODY_TEX_COORD);
 	wheels = new Cylinder[WHEELS_COUNT];
 	wheels[0].setValues(glm::vec3((-length + radius) / 2, (-height + radius) / 2, (width + WHEEL_WIDTH) / 2), radius, WHEEL_WIDTH, WHEEL_PIECES, WHEEL_TEX_NAME1, WHEEL_TEX_NAME2);
@@ -32,30 +32,13 @@ Locomotive::Locomotive(float width, float height, float length, float radius) {
 	balks[0].setValues(glm::vec3(0, (-height + radius) / 2, width / 2 + WHEEL_WIDTH + BALK_WIDTH / 2), length - radius, BALK_HEIGHT, BALK_WIDTH, BALK_TEX_NAME, BALK_TEX_COORD);
 	balks[1].setValues(glm::vec3(0, (-height + radius) / 2, -width / 2 - WHEEL_WIDTH - BALK_WIDTH / 2), length - radius, BALK_HEIGHT, BALK_WIDTH, BALK_TEX_NAME, BALK_TEX_COORD);
 	moveX(0);
-
-
 }
 
 
-void Locomotive::draw(Shader shader, unsigned int winWidth, unsigned int winHeight) {
-	glm::mat4 model;
-	//model = glm::rotate(model, glm::radians(95.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-	model = glm::translate(model, position);
-	//model = glm::translate(model, glm::vec3((float)glfwGetTime() / 20, 0,/* 0*/ (float)glfwGetTime() / 20));
-	//model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
-	//model = glm::rotate(model, (float)glfwGetTime() * glm::radians(100.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-	//model = glm::translate(model, glm::vec3((float)glfwGetTime() / -20, 0,/* 0*/ (float)glfwGetTime() / 20));
+void Locomotive::draw(Shader shader, glm::mat4 model) {
+	//glm::mat4 model;
 	model = glm::scale(model, glm::vec3(0.5, 0.5, 0.5));
-
-
-	//!!!obsluga kamery w mainie
-	//glm::mat4 view;
-	//// note that we're translating the scene in the reverse direction of where we want to move
-	//view = glm::translate(view, glm::vec3(0.0f, 0.0f, -1.6f));
-	//view = glm::rotate(view, glm::radians(30.f), glm::vec3(1.0, 1.0, 0.0));
-
-	//glm::mat4 projection;
-	//projection = glm::perspective(glm::radians(45.0f), (GLfloat)winWidth / (GLfloat)winHeight, 0.1f, 100.0f);
+	model = glm::translate(model, position);
 
 	body->draw(shader, model);
 	for (int i = 0; i < WHEELS_COUNT; ++i)

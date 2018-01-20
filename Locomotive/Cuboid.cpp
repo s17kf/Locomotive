@@ -22,7 +22,7 @@ const unsigned int indicesInitializer[] = {
 
 /*
 * textCoord: {front side, back side, left, right, bottom, top side}
-* for each side has two values: x and y ==> size of array is: 6*2=12
+* for each side has 4 values: x-start, x-end, y-s. and y-e. ==> size of array is: 6*4=24
 */
 Cuboid::Cuboid(glm::vec3 position, float width, float height, float length, std::string textureName, const float *texCoord) {
 	setValues(position, width, height, length, textureName, texCoord);
@@ -88,54 +88,6 @@ void Cuboid::setValues(glm::vec3 position, float width, float height, float leng
 
 }
 
-void Cuboid::draw(Shader &shader) {
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glUniform1i(glGetUniformLocation(shader.getID(), "Texture"), 0);
-
-
-	shader.use();
-	glBindVertexArray(VAO);
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-	glBindVertexArray(0);
-}
-
-
-void Cuboid::draw(Shader &shader, unsigned int winWidth, unsigned int winHeight) {
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glUniform1i(glGetUniformLocation(shader.getID(), "Texture"), 0);
-
-	//glm::mat4 model = glm::mat4(1.0f);
-	glm::mat4 model;
-	//model = glm::rotate(model, glm::radians(30.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-	model = glm::translate(model, position);
-	model = glm::translate(model, glm::vec3((float)glfwGetTime() / 20, 0, (float)glfwGetTime() / 20));
-	model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
-	//model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-	model = glm::scale(model, glm::vec3(0.5, 0.5, 0.5));
-
-	glm::mat4 view;
-	// note that we're translating the scene in the reverse direction of where we want to move
-	view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-	//view = glm::rotate(view, glm::radians(10.f), glm::vec3(1.0, 1.0, 0.0));
-
-	glm::mat4 projection;
-	projection = glm::perspective(glm::radians(45.0f), (GLfloat)winWidth / (GLfloat)winHeight, 0.1f, 100.0f);
-
-	shader.setMat4("model", model);
-	shader.setMat4("view", view);
-	shader.setMat4("projection", projection);
-
-
-	shader.use();
-	glBindVertexArray(VAO);
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-	glBindVertexArray(0);
-
-
-}
-
 void Cuboid::draw(Shader shader, glm::mat4 model) {
 
 	//model = glm::translate(model, position + translation);
@@ -155,26 +107,26 @@ void Cuboid::draw(Shader shader, glm::mat4 model) {
 	glBindVertexArray(0);
 }
 
-void Cuboid::draw(Shader shader, glm::mat4 model, glm::mat4 view, glm::mat4 projection) {
-	
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glUniform1i(glGetUniformLocation(shader.getID(), "Texture"), 0);
-	model = glm::translate(model, translation);
-	model = glm::translate(model, position);
-
-	shader.use();
-	shader.setMat4("model", model);
-	shader.setMat4("view", view);
-	shader.setMat4("projection", projection);
-
-
-
-	glBindVertexArray(VAO);
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-	glBindVertexArray(0);
-
-}
+//void Cuboid::draw(Shader shader, glm::mat4 model, glm::mat4 view, glm::mat4 projection) {
+//	
+//	glActiveTexture(GL_TEXTURE0);
+//	glBindTexture(GL_TEXTURE_2D, texture);
+//	glUniform1i(glGetUniformLocation(shader.getID(), "Texture"), 0);
+//	model = glm::translate(model, translation);
+//	model = glm::translate(model, position);
+//
+//	shader.use();
+//	shader.setMat4("model", model);
+//	shader.setMat4("view", view);
+//	shader.setMat4("projection", projection);
+//
+//
+//
+//	glBindVertexArray(VAO);
+//	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+//	glBindVertexArray(0);
+//
+//}
 
 
 Cuboid::~Cuboid() {
@@ -197,10 +149,10 @@ void Cuboid::generateVerticesArray(glm::vec3 position, unsigned int vertSize, co
 	vertices[2 * vertSize + 1] = vertices[3 * vertSize + 1] = height / 2;
 	vertices[2] = vertices[vertSize + 2] = vertices[2 * vertSize + 2] = vertices[3 * vertSize + 2] = length / 2;
 	//texture
-	vertices[3] = vertices[3 * vertSize + 3] = 0.0;	//x left
-	vertices[vertSize + 3] = vertices[2 * vertSize + 3] = texCoord[0];//x right
-	vertices[4] = vertices[vertSize + 4] = 0.0f;//y bottom
-	vertices[2 * vertSize + 4] = vertices[3 * vertSize + 4] = texCoord[1];//y top
+	vertices[3] = vertices[3 * vertSize + 3] = texCoord[0];	//x left
+	vertices[vertSize + 3] = vertices[2 * vertSize + 3] = texCoord[1];//x right
+	vertices[4] = vertices[vertSize + 4] = texCoord[2];//y bottom
+	vertices[2 * vertSize + 4] = vertices[3 * vertSize + 4] = texCoord[3];//y top
 	//normals
 	vertices[5] = vertices[vertSize + 5] = vertices[2 * vertSize + 5] = vertices[3 * vertSize + 5] = 0;	//x
 	vertices[6] = vertices[vertSize + 6] = vertices[2 * vertSize + 6] = vertices[3 * vertSize + 6] = 0;	//y
@@ -214,10 +166,10 @@ void Cuboid::generateVerticesArray(glm::vec3 position, unsigned int vertSize, co
 	vertices[6 * vertSize + 1] = vertices[7 * vertSize + 1] = height / 2;
 	vertices[4 * vertSize + 2] = vertices[5 * vertSize + 2] = vertices[6 * vertSize + 2] = vertices[7 * vertSize + 2] = -length / 2;
 	//texture
-	vertices[4 * vertSize + 3] = vertices[7 * vertSize + 3] = 0.0;	//x left
-	vertices[5 * vertSize + 3] = vertices[6 * vertSize + 3] = texCoord[2];//x right
-	vertices[4 * vertSize + 4] = vertices[5 * vertSize + 4] = 0.0;//y bottom
-	vertices[6 * vertSize + 4] = vertices[7 * vertSize + 4] = texCoord[3];//y top
+	vertices[4 * vertSize + 3] = vertices[7 * vertSize + 3] = texCoord[4];	//x left
+	vertices[5 * vertSize + 3] = vertices[6 * vertSize + 3] = texCoord[5];//x right
+	vertices[4 * vertSize + 4] = vertices[5 * vertSize + 4] = texCoord[6];//y bottom
+	vertices[6 * vertSize + 4] = vertices[7 * vertSize + 4] = texCoord[7];//y top
 	//normals
 	vertices[4 * vertSize + 5] = vertices[5 * vertSize + 5] = vertices[6 * vertSize + 5] = vertices[7 * vertSize + 5] = 0;	//x
 	vertices[4 * vertSize + 6] = vertices[5 * vertSize + 6] = vertices[6 * vertSize + 6] = vertices[7 * vertSize + 6] = 0;	//y
@@ -230,10 +182,10 @@ void Cuboid::generateVerticesArray(glm::vec3 position, unsigned int vertSize, co
 	vertices[8 * vertSize + 2] = vertices[11 * vertSize + 2] = length / 2;
 	vertices[9 * vertSize + 2] = vertices[10 * vertSize + 2] = -length / 2;
 	//texture
-	vertices[9 * vertSize + 3] = vertices[10 * vertSize + 3] = 0.0;	//x left
-	vertices[8 * vertSize + 3] = vertices[11 * vertSize + 3] = texCoord[4];//x right
-	vertices[8 * vertSize + 4] = vertices[9 * vertSize + 4] = 0.0;//y bottom
-	vertices[10 * vertSize + 4] = vertices[11 * vertSize + 4] = texCoord[5];//y top
+	vertices[9 * vertSize + 3] = vertices[10 * vertSize + 3] = texCoord[8];	//x left
+	vertices[8 * vertSize + 3] = vertices[11 * vertSize + 3] = texCoord[9];//x right
+	vertices[8 * vertSize + 4] = vertices[9 * vertSize + 4] = texCoord[10];//y bottom
+	vertices[10 * vertSize + 4] = vertices[11 * vertSize + 4] = texCoord[11];//y top
 	//normals
 	vertices[8 * vertSize + 5] = vertices[9 * vertSize + 5] = vertices[10 * vertSize + 5] = vertices[11 * vertSize + 5] = -1;	//x
 	vertices[8 * vertSize + 6] = vertices[9 * vertSize + 6] = vertices[10 * vertSize + 6] = vertices[11 * vertSize + 6] = 0;	//y
@@ -246,10 +198,10 @@ void Cuboid::generateVerticesArray(glm::vec3 position, unsigned int vertSize, co
 	vertices[12 * vertSize + 2] = vertices[15 * vertSize + 2] = length / 2;
 	vertices[13 * vertSize + 2] = vertices[14 * vertSize + 2] = -length / 2;
 	//texture
-	vertices[12 * vertSize + 3] = vertices[15 * vertSize + 3] = 0.0;	//x left
-	vertices[13 * vertSize + 3] = vertices[14 * vertSize + 3] = texCoord[6];//x right
-	vertices[12 * vertSize + 4] = vertices[13 * vertSize + 4] = 0.0;//y bottom
-	vertices[14 * vertSize + 4] = vertices[15 * vertSize + 4] = texCoord[7];//y top
+	vertices[12 * vertSize + 3] = vertices[15 * vertSize + 3] = texCoord[12];	//x left
+	vertices[13 * vertSize + 3] = vertices[14 * vertSize + 3] = texCoord[13];//x right
+	vertices[12 * vertSize + 4] = vertices[13 * vertSize + 4] = texCoord[14];//y bottom
+	vertices[14 * vertSize + 4] = vertices[15 * vertSize + 4] = texCoord[15];//y top
 	//normals
 	vertices[12 * vertSize + 5] = vertices[13 * vertSize + 5] = vertices[14 * vertSize + 5] = vertices[15 * vertSize + 5] = 1;	//x
 	vertices[12 * vertSize + 6] = vertices[13 * vertSize + 6] = vertices[14 * vertSize + 6] = vertices[15 * vertSize + 6] = 0;	//y
@@ -262,10 +214,10 @@ void Cuboid::generateVerticesArray(glm::vec3 position, unsigned int vertSize, co
 	vertices[16 * vertSize + 2] = vertices[17 * vertSize + 2] = length / 2;
 	vertices[18 * vertSize + 2] = vertices[19 * vertSize + 2] = -length / 2;
 	//texture
-	vertices[16 * vertSize + 3] = vertices[19 * vertSize + 3] = 0.0;	//x left
-	vertices[17 * vertSize + 3] = vertices[18 * vertSize + 3] = texCoord[8];//x right
-	vertices[18 * vertSize + 4] = vertices[19 * vertSize + 4] = 0.0;//y bottom
-	vertices[16 * vertSize + 4] = vertices[17 * vertSize + 4] = texCoord[9];//y top
+	vertices[16 * vertSize + 3] = vertices[19 * vertSize + 3] = texCoord[16];	//x left
+	vertices[17 * vertSize + 3] = vertices[18 * vertSize + 3] = texCoord[17];//x right
+	vertices[18 * vertSize + 4] = vertices[19 * vertSize + 4] = texCoord[18];//y bottom
+	vertices[16 * vertSize + 4] = vertices[17 * vertSize + 4] = texCoord[19];//y top
 	//normals
 	vertices[16 * vertSize + 5] = vertices[17 * vertSize + 5] = vertices[18 * vertSize + 5] = vertices[19 * vertSize + 5] = 0;	//x
 	vertices[16 * vertSize + 6] = vertices[17 * vertSize + 6] = vertices[18 * vertSize + 6] = vertices[19 * vertSize + 6] = -1;	//y
@@ -278,10 +230,10 @@ void Cuboid::generateVerticesArray(glm::vec3 position, unsigned int vertSize, co
 	vertices[20 * vertSize + 2] = vertices[21 * vertSize + 2] = length / 2;
 	vertices[22 * vertSize + 2] = vertices[23 * vertSize + 2] = -length / 2;
 	//texture
-	vertices[21 * vertSize + 3] = vertices[22 * vertSize + 3] = 0.0;	//x left
-	vertices[20 * vertSize + 3] = vertices[23 * vertSize + 3] = texCoord[10];//x right
-	vertices[22 * vertSize + 4] = vertices[23 * vertSize + 4] = 0.0;//y bottom
-	vertices[20 * vertSize + 4] = vertices[21 * vertSize + 4] = texCoord[11];//y top
+	vertices[21 * vertSize + 3] = vertices[22 * vertSize + 3] = texCoord[20];	//x left
+	vertices[20 * vertSize + 3] = vertices[23 * vertSize + 3] = texCoord[21];//x right
+	vertices[22 * vertSize + 4] = vertices[23 * vertSize + 4] = texCoord[22];//y bottom
+	vertices[20 * vertSize + 4] = vertices[21 * vertSize + 4] = texCoord[23];//y top
 	//normals
 	vertices[20 * vertSize + 5] = vertices[21 * vertSize + 5] = vertices[22 * vertSize + 5] = vertices[23 * vertSize + 5] = 0;	//x
 	vertices[20 * vertSize + 6] = vertices[21 * vertSize + 6] = vertices[22 * vertSize + 6] = vertices[23 * vertSize + 6] = 1;	//y

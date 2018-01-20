@@ -130,11 +130,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Image Include="back.jpg" />
     <Image Include="black.jpg" />
     <Image Include="black2.jpg" />
+    <Image Include="bottom.jpg" />
     <Image Include="deska.png" />
+    <Image Include="front.jpg" />
     <Image Include="kolo.jpg" />
+    <Image Include="left.jpg" />
+    <Image Include="right.jpg" />
+    <Image Include="road.jpg" />
     <Image Include="silver.jpg" />
+    <Image Include="top.jpg" />
     <Image Include="treeCrown.jpg" />
     <Image Include="treeTrunk.jpg" />
   </ItemGroup>
@@ -161,6 +168,7 @@
     <ClInclude Include="locomotive.h" />
     <ClInclude Include="shprogram.h" />
     <ClInclude Include="simpleCuboid.h" />
+    <ClInclude Include="skybox.h" />
     <ClInclude Include="tree.h" />
   </ItemGroup>
   <ItemGroup>
@@ -171,6 +179,8 @@
     <None Include="locomotive.frag" />
     <None Include="Lokomotywa.vcxproj" />
     <None Include="locomotive.vert" />
+    <None Include="skybox.frag" />
+    <None Include="skybox.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
