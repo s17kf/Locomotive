@@ -131,15 +131,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <Image Include="black.jpg" />
-    <Image Include="black.png" />
+    <Image Include="black2.jpg" />
     <Image Include="deska.png" />
     <Image Include="kolo.jpg" />
+    <Image Include="silver.jpg" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cuboid.cpp" />
     <ClCompile Include="Cylinder.cpp" />
     <ClCompile Include="cylinderBases.cpp" />
     <ClCompile Include="cylinderSide.cpp" />
+    <ClCompile Include="light.cpp" />
     <ClCompile Include="locomotive.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="shprogram.cpp" />
@@ -160,6 +162,8 @@
   <ItemGroup>
     <None Include="light.frag" />
     <None Include="light.vert" />
+    <None Include="lightedObject.frag" />
+    <None Include="lightedObject.vert" />
     <None Include="locomotive.frag" />
     <None Include="Lokomotywa.vcxproj" />
     <None Include="locomotive.vert" />

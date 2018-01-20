@@ -1,7 +1,7 @@
 #include "cylinderBases.h"
 
 CylinderBases::CylinderBases(glm::vec3 position, float radius, float height, unsigned int pieces, std::string textureName) {
-	unsigned int vertSize = 5;
+	unsigned int vertSize = 8;
 	//unsigned int verticesCount = 6 * pieces;
 	//unsigned int indicesCount = 6 * pieces;
 	unsigned int verticesCount = 2 * (pieces * 2 + 1);
@@ -16,7 +16,7 @@ CylinderBases::CylinderBases(glm::vec3 position, float radius, float height, uns
 	//vertices = new float[vertSize*(2 * (pieces * 2 + 1))];
 	//vertices = new float[5 * (6 * pieces)];
 	//indices = new unsigned int[6 * pieces];
-	vertices = new float[5 * verticesCount];
+	vertices = new float[vertSize * verticesCount];
 	indices = new unsigned int[indicesCount];
 
 	generateVerticesArray(vertSize);
@@ -29,19 +29,22 @@ CylinderBases::CylinderBases(glm::vec3 position, float radius, float height, uns
 	glBindVertexArray(VAO);
 	// 0. copy our vertices array in a buffer for OpenGL to use
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 5 * (verticesCount), vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertSize * (verticesCount), vertices, GL_STATIC_DRAW);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indicesCount, indices, GL_STATIC_DRAW);
 
 	// position attribute
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, vertSize * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 	// color attribute
 	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
 	//glEnableVertexAttribArray(1);
 	// vertex texture coordinates
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, vertSize * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(1);
+	//normals
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, vertSize * sizeof(GLfloat), (GLvoid*)(5 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(2);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -113,6 +116,10 @@ void CylinderBases::generateVerticesArray(unsigned int vertSize) {
 	//texture
 	vertices[3] = 0.5;
 	vertices[4] = 0.0;
+	//normal
+	vertices[5] = 0;	//x
+	vertices[6] = 0;	//y
+	vertices[7] = 1;	//z
 
 	//circle
 	for (int i = 1; i <= 2 * pieces; i += 2) {
@@ -122,12 +129,18 @@ void CylinderBases::generateVerticesArray(unsigned int vertSize) {
 		vertices[i*vertSize + 2] = height / 2;	//z
 		vertices[i*vertSize + 3] = 0.0;	//tex x
 		vertices[i*vertSize + 4] = 1.0;	//tex y
+		vertices[i*vertSize + 5] = 0.0;	//normal x
+		vertices[i*vertSize + 6] = 0;	//normal y
+		vertices[i*vertSize + 7] = 1.0;	//normal z
 										//right vert
 		vertices[(i + 1)*vertSize] = radius*sin((i + 1) / 2 * alpha);	//x
 		vertices[(i + 1)*vertSize + 1] = radius*cos((i + 1) / 2 * alpha);	//y
 		vertices[(i + 1)*vertSize + 2] = height / 2;	//z
 		vertices[(i + 1)*vertSize + 3] = 1.0;	//tex x
 		vertices[(i + 1)*vertSize + 4] = 1.0;	//tex y
+		vertices[(i + 1)*vertSize + 5] = 0;	//normal x
+		vertices[(i + 1)*vertSize + 6] = 0;	//normal y
+		vertices[(i + 1)*vertSize + 7] = 1;	//normal z
 	}
 
 	//back circle
@@ -137,6 +150,10 @@ void CylinderBases::generateVerticesArray(unsigned int vertSize) {
 	//texture
 	vertices[(2 * pieces + 1)*vertSize + 3] = 0.5;
 	vertices[(2 * pieces + 1)*vertSize + 4] = 0.0;
+	//normal
+	vertices[(2 * pieces + 1)*vertSize + 5] = 0;	//x
+	vertices[(2 * pieces + 1)*vertSize + 6] = 0;	//y
+	vertices[(2 * pieces + 1)*vertSize + 7] = -1;	//z
 
 	//circle
 	for (int i = 1; i <= 2 * pieces; i += 2) {
@@ -146,12 +163,18 @@ void CylinderBases::generateVerticesArray(unsigned int vertSize) {
 		vertices[(2 * pieces + 1)*vertSize + i * vertSize + 2] = -height / 2;	//z
 		vertices[(2 * pieces + 1)*vertSize + i*vertSize + 3] = 0.0;	//tex x
 		vertices[(2 * pieces + 1)*vertSize + i*vertSize + 4] = 1.0;	//tex y
+		vertices[(2 * pieces + 1)*vertSize + i * vertSize + 5] = 0;	//normal x
+		vertices[(2 * pieces + 1)*vertSize + i * vertSize + 6] = 0;	//normal y
+		vertices[(2 * pieces + 1)*vertSize + i * vertSize + 7] = -1;	//normal z
 																	//right vert
 		vertices[(2 * pieces + 2)*vertSize + i*vertSize] = radius*sin((i + 1) / 2 * alpha);	//x
 		vertices[(2 * pieces + 2)*vertSize + i*vertSize + 1] = radius*cos((i + 1) / 2 * alpha);	//y
 		vertices[(2 * pieces + 2)*vertSize + i * vertSize + 2] = -height / 2;	//z
 		vertices[(2 * pieces + 2)*vertSize + i*vertSize + 3] = 1.0;	//tex x
 		vertices[(2 * pieces + 2)*vertSize + i*vertSize + 4] = 1.0;	//tex y
+		vertices[(2 * pieces + 2)*vertSize + i * vertSize + 5] = 0;	//normal x
+		vertices[(2 * pieces + 2)*vertSize + i * vertSize + 6] = 0;	//normal y
+		vertices[(2 * pieces + 2)*vertSize + i * vertSize + 7] = -1;	//normal z
 	}
 
 

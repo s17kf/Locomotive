@@ -14,6 +14,7 @@ public:
 	void moveX(float move) { position.x += move; }
 	void moveY(float move) { position.y += move; }
 	void moveZ(float move) { position.z += move; }
+	//void setLightParametersToDefault(Shader shader, glm::vec3 cameraPosition);
 
 
 };

@@ -18,13 +18,16 @@
     <Image Include="black.jpg">
       <Filter>Pliki zasobów</Filter>
     </Image>
-    <Image Include="black.png">
-      <Filter>Pliki zasobów</Filter>
-    </Image>
     <Image Include="deska.png">
       <Filter>Pliki zasobów</Filter>
     </Image>
     <Image Include="kolo.jpg">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="black2.jpg">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="silver.jpg">
       <Filter>Pliki zasobów</Filter>
     </Image>
   </ItemGroup>
@@ -51,6 +54,9 @@
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
     <ClCompile Include="simpleCuboid.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="light.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
   </ItemGroup>
@@ -92,5 +98,7 @@
     <None Include="locomotive.frag" />
     <None Include="light.frag" />
     <None Include="light.vert" />
+    <None Include="lightedObject.frag" />
+    <None Include="lightedObject.vert" />
   </ItemGroup>
 </Project>

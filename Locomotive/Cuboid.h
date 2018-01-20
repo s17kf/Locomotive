@@ -38,12 +38,12 @@ class Cuboid {
 
 public:
 	Cuboid() :width(0), height(0), length(0), position(0, 0, 0), translation(0, 0, 0) {};
-	Cuboid(glm::vec3 position, float width, float height, float length, std::string textureName, float *texCoord);
+	Cuboid(glm::vec3 position, float width, float height, float length, std::string textureName, const float *texCoord);
 	void draw(Shader &shader);
 	void draw(Shader &shader, unsigned int winWidth, unsigned int winHeight);
 	void draw(Shader shader, glm::mat4 model);
 	void draw(Shader shader, glm::mat4 model, glm::mat4 view, glm::mat4 projection);
-	void setValues(glm::vec3 position, float width, float height, float length, std::string textureName, float *textCoord);
+	void setValues(glm::vec3 position, float width, float height, float length, std::string textureName, const float *textCoord);
 	~Cuboid();
 	void setTranslation(glm::vec3 translation) { this->translation = translation; }
 	void setPosition(glm::vec3 position) { this->position = position; }
@@ -56,7 +56,7 @@ public:
 	
 
 private:
-	void generateVerticesArray(glm::vec3 position, unsigned int vertSize, float*texCoord);
+	void generateVerticesArray(glm::vec3 position, unsigned int vertSize, const float*texCoord);
 
 	GLuint LoadMipmapTexture(GLuint texId, const char* fname)
 	{
