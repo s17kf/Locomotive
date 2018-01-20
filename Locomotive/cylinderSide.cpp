@@ -10,7 +10,7 @@ CylinderSide::CylinderSide(glm::vec3 position, float radius, float height, unsig
 	this->radius = radius;
 	this->height = height;
 	this->pieces = pieces;
-	this->positon = position;
+	this->position = position;
 	this->textureName = textureName;
 	//vertices = new float[pieces * 4 + 2 * (pieces * 2 + 1)];
 	//vertices = new float[vertSize*(2 * (pieces * 2 + 1))];
@@ -18,6 +18,7 @@ CylinderSide::CylinderSide(glm::vec3 position, float radius, float height, unsig
 	//indices = new unsigned int[6 * pieces];
 	vertices = new float[vertSize * verticesCount];
 	indices = new unsigned int[indicesCount];
+	rotationX = 0;
 
 	generateVerticesArray(vertSize);
 	generateIndicesArray();
@@ -60,7 +61,10 @@ CylinderSide::CylinderSide(glm::vec3 position, float radius, float height, unsig
 
 }
 
-void CylinderSide::draw(Shader &shader) {
+void CylinderSide::draw(Shader &shader, glm::mat4 model) {
+	model = glm::translate(model, position);
+	model = glm::rotate(model, rotationX, glm::vec3(0,0,1));
+	shader.setMat4("model", model);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture);
 	glUniform1i(glGetUniformLocation(shader.getID(), "Texture"), 0);
@@ -72,22 +76,22 @@ void CylinderSide::draw(Shader &shader) {
 	glBindVertexArray(0);
 }
 
-void CylinderSide::draw(Shader &shader, unsigned int winWidth, unsigned int winHeight) {
-
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glUniform1i(glGetUniformLocation(shader.getID(), "Texture"), 0);
-
-	
-
-
-	shader.use();
-	glBindVertexArray(VAO);
-	glDrawElements(GL_TRIANGLES, indicesCount, GL_UNSIGNED_INT, 0);
-	glBindVertexArray(0);
-
-
-}
+//void CylinderSide::draw(Shader &shader, unsigned int winWidth, unsigned int winHeight) {
+//
+//	glActiveTexture(GL_TEXTURE0);
+//	glBindTexture(GL_TEXTURE_2D, texture);
+//	glUniform1i(glGetUniformLocation(shader.getID(), "Texture"), 0);
+//
+//	
+//
+//
+//	shader.use();
+//	glBindVertexArray(VAO);
+//	glDrawElements(GL_TRIANGLES, indicesCount, GL_UNSIGNED_INT, 0);
+//	glBindVertexArray(0);
+//
+//
+//}
 
 void CylinderSide::generateVerticesArray(unsigned int vertSize) {
 	float alpha = glm::radians((float)360.0 / pieces);
@@ -132,7 +136,7 @@ void CylinderSide::generateVerticesArray(unsigned int vertSize) {
 		int j1 = i * vertSize, j2 = (i + 1)*vertSize, j3 = (i + 2 * pieces)*vertSize, j4 = (i + 2 * pieces + 1)*vertSize;
 		glm::vec3 v1(vertices[j2] - vertices[j1], vertices[j2 + 1] - vertices[j1 + 1], vertices[j2 + 2] - vertices[j1 + 2]);
 		glm::vec3 v2(vertices[j3] - vertices[j1], vertices[j3 + 1] - vertices[j1 + 1], vertices[j3 + 2] - vertices[j1 + 2]);
-		glm::vec3 normal = glm::cross(v2, v1);
+		glm::vec3 normal = glm::cross(v1, v2);
 		vertices[j1 + 5] = vertices[j2 + 5] = vertices[j3 + 5] = vertices[j4 + 5] = normal.x;
 		vertices[j1 + 6] = vertices[j2 + 6] = vertices[j3 + 6] = vertices[j4 + 6] = normal.y;
 		vertices[j1 + 7] = vertices[j2 + 7] = vertices[j3 + 7] = vertices[j4 + 7] = normal.z;

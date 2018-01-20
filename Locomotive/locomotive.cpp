@@ -67,7 +67,7 @@ void Locomotive::draw(Shader shader, unsigned int winWidth, unsigned int winHeig
 void Locomotive::moveX(float move) {
 	position.x += move;
 	for (int i = 0; i < WHEELS_COUNT; ++i)
-		wheels[i].rotate(-move / wheels[i].getRadius());
+		wheels[i].rotateX(-move / wheels[i].getRadius());
 	int cosSign = 1;
 	if (cos(wheels[0].getRotation()) < 0)
 		cosSign = -1;

@@ -135,6 +135,8 @@
     <Image Include="deska.png" />
     <Image Include="kolo.jpg" />
     <Image Include="silver.jpg" />
+    <Image Include="treeCrown.jpg" />
+    <Image Include="treeTrunk.jpg" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cuboid.cpp" />
@@ -146,6 +148,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="shprogram.cpp" />
     <ClCompile Include="simpleCuboid.cpp" />
+    <ClCompile Include="tree.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h" />
@@ -158,6 +161,7 @@
     <ClInclude Include="locomotive.h" />
     <ClInclude Include="shprogram.h" />
     <ClInclude Include="simpleCuboid.h" />
+    <ClInclude Include="tree.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="light.frag" />

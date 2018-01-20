@@ -30,6 +30,12 @@
     <Image Include="silver.jpg">
       <Filter>Pliki zasobów</Filter>
     </Image>
+    <Image Include="treeTrunk.jpg">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="treeCrown.jpg">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cuboid.cpp">
@@ -57,6 +63,9 @@
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
     <ClCompile Include="light.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="tree.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
   </ItemGroup>
@@ -89,6 +98,9 @@
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
     <ClInclude Include="light.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="tree.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
   </ItemGroup>

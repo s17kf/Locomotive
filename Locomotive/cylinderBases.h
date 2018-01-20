@@ -25,7 +25,7 @@ class CylinderBases {
 	float height;
 	unsigned int pieces;
 	unsigned int indicesCount;
-	glm::vec3 positon;
+	glm::vec3 position;
 	unsigned int VAO;
 	unsigned int VBO;
 	unsigned int EBO;
@@ -34,15 +34,18 @@ class CylinderBases {
 	//Shader shader;
 	float *vertices;
 	unsigned int *indices;
+	float rotationX;
 
 
 public:
-	CylinderBases() :radius(0), height(0), pieces(0), positon(0, 0, 0) {};
+	CylinderBases() :radius(0), height(0), pieces(0), position(0, 0, 0), rotationX(0) {};
 	CylinderBases(glm::vec3 position, float radius, float height, unsigned int pieces, std::string textureName);
-	void draw(Shader &shader);
-	void draw(Shader &shader, unsigned int winWidth, unsigned int winHeight);
+	void draw(Shader &shader, glm::mat4 model);
+	//void draw(Shader &shader, unsigned int winWidth, unsigned int winHeight);
 	//	void setValues(glm::vec3 position, float width, float height, float length, std::string textureName, float *textCoord);
 	~CylinderBases();
+	void rotateX(float angle) { rotationX += angle; }
+	float getRotationX() { return rotationX; }
 
 private:
 	void generateVerticesArray(unsigned int vertSize);

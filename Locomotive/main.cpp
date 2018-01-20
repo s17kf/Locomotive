@@ -6,6 +6,7 @@
 #include <GLFW/glfw3.h>
 #include <SOIL.h>
 #include <iostream>
+#include <ctime>
 using namespace std;
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -16,6 +17,7 @@ using namespace std;
 #include "camera.h"
 #include "simpleCuboid.h"
 #include "light.h"
+#include "tree.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -41,6 +43,7 @@ Light *lamp;
 
 int main()
 {
+	srand(time(NULL));
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -90,6 +93,12 @@ int main()
 	locomotive = new Locomotive(0.5, 0.2, 0.8, 0.15);
 	lamp = new Light(glm::vec3(0, 0.5, 0), 0.02, 0.02, 0.02);
 
+	Tree *tree = new Tree[TREES_COUNTER_1];
+	for (int i = 0; i < TREES_COUNTER_1; ++i) {
+		int z = rand() % 10;
+		tree[i].setValues(glm::vec3(8 - i * 15, 0, z < 7 ? -10 : 5), 8, 1, TREE_CROWN_LEVELS_C, TREE_TRUNK_TEX, TREE_CROWN_TEX);
+	}
+
 	//Cuboid *lightedCuboid = new Cuboid(glm::vec3(-1, 2, -1), 0.5, 0.6, 0.4, "deska.png", BALK_TEX_COORD);
 	//Cylinder *lightedCylinder = new Cylinder(glm::vec3(1, 2, -1), 0.6, 0.2, 12, "kolo.jpg", "black2.jpg");
 	//lamp - new Light();
@@ -136,6 +145,12 @@ int main()
 		glm::mat4 model;// = glm::mat4();
 		//model = glm::scale(model, glm::vec3(0.2));
 		lamp->draw(lampShader, model);
+		
+		lightedObjectShader.use();
+		lightedObjectShader.setMat4("view", view);
+		lightedObjectShader.setMat4("projection", projection);
+		for(int i=0;i<TREES_COUNTER_1;++i)
+			tree[i].draw(lightedObjectShader, glm::mat4());
 
 		
 		//lightedObjectShader.setMat4("view", view);
@@ -160,10 +175,11 @@ int main()
 
 	delete locomotive;
 	delete lamp;
+	delete[] tree;
 	//delete lightedCuboid;
 	//delete lightedCylinder;
 
-	system("PAUSE");
+//	system("PAUSE");
 	return 0;
 }
 
