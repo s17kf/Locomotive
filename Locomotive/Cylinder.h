@@ -24,13 +24,6 @@
 
 class Cylinder {
 
-	//unsigned int VAO;
-	//unsigned int VBO;
-	//unsigned int EBO;
-	//std::string textureBaseName;
-	//std::string textureSideName;
-	//unsigned int textureBase;
-	//unsigned int textureSide;
 	CylinderBases *bases;
 	CylinderSide *side;
 	glm::vec3 position;

@@ -93,12 +93,12 @@ int main()
 	//CylinderBases cylinderBases(glm::vec3(0.1, 0.1, 0.1), 0.15, 0.1, 24, "kolo.jpg");
 	
 	locomotive = new Locomotive(LOC_WIDTH, LOC_HEIGHT, LOC_LENGTH, WHEEL_RADIUS);
-	lamp = new Light(glm::vec3(0, 0.5, 0), 0.02, 0.02, 0.02);
+	lamp = new Light(glm::vec3(0, 1.5, 0), 0.02, 0.02, 0.02);
 
 	Tree *trees = new Tree[TREES_COUNTER_1];
 	for (int i = 0; i < TREES_COUNTER_1; ++i) {
-		int z = rand() % 10;
-		trees[i].setValues(glm::vec3(-240 + i*20, 0.1, z < 7 ? -10 : 10), 8, 1, TREE_CROWN_LEVELS_C, TREE_TRUNK_TEX, TREE_CROWN_TEX);
+		int z = rand() % 100;
+		trees[i].setValues(glm::vec3(-240 + i*25, 0.1, z < 95 ? -10 : 10), TREE_HEIGHT, TREE_TRUNK_RADIUS, TREE_CROWN_LEVELS_C, TREE_TRUNK_TEX, TREE_CROWN_TEX);
 	}
 
 	Cuboid *platform = new Cuboid(glm::vec3(0, -PLATFORM_HEIGHT / 2,0), PLATFORM_LENGTH, PLATFORM_HEIGHT, PLATFORM_WIDTH, PLATFORM_TEX_NAME, PLATFORM_TEX_COORD);
@@ -106,10 +106,6 @@ int main()
 	Skybox *skybox = new Skybox(WALLS_TEX_NAMES);
 	
 
-	//Cuboid *lightedCuboid = new Cuboid(glm::vec3(-1, 2, -1), 0.5, 0.6, 0.4, "deska.png", BALK_TEX_COORD);
-	//Cylinder *lightedCylinder = new Cylinder(glm::vec3(1, 2, -1), 0.6, 0.2, 12, "kolo.jpg", "black2.jpg");
-	//lamp - new Light();
-	//Locomotive lokomotywa2;
 	//main loop
 	while (!glfwWindowShouldClose(window))
 	{
@@ -118,6 +114,8 @@ int main()
 		float currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
+
+		locomotive->setDeltaTime(deltaTime);
 
 		glfwPollEvents();
 		processInput(window);
@@ -188,9 +186,13 @@ void processInput(GLFWwindow *window)
 	
 	//locomotive move
 	if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS)
-		locomotive->moveX(-deltaTime);
+		locomotive->moveX(- SPEED_INCREASE_STEP);
+		//locomotive->moveX(-deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS)
-		locomotive->moveX(deltaTime);
+		locomotive->moveX(SPEED_INCREASE_STEP);
+		//locomotive->moveX(deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS)
+		locomotive->stopMoving();
 
 	//camera move
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)

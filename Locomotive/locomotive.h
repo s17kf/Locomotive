@@ -13,6 +13,9 @@ class Locomotive {
 	Cuboid *body;
 	Cylinder *wheels;
 	Cuboid *balks;
+	float speedMultiplier;
+	float deltaTime;
+	//glm::vec3 translation;
 
 public:
 	Locomotive();
@@ -20,6 +23,8 @@ public:
 	~Locomotive();
 	void draw(Shader shader, glm::mat4 model);
 	void moveX(float move);
+	void setDeltaTime(float deltaValue) { deltaTime = deltaValue; }
+	void stopMoving() { speedMultiplier = 0; }
 
 
 

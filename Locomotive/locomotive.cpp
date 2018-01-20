@@ -12,6 +12,8 @@ Locomotive::Locomotive() {
 	balks = new Cuboid[BALKS_COUNT];
 	balks[0].setValues(glm::vec3(0, 0, 0), 1.2, 0.05, 0.05, "deska.png", BALK_TEX_COORD);
 	balks[1].setValues(glm::vec3(0, 0, 0.5), 1.2, 0.05, 0.05, "deska.png", BALK_TEX_COORD);
+	speedMultiplier = deltaTime = 0;
+	//translation = glm::vec3(0);
 }
 
 /*
@@ -32,11 +34,34 @@ Locomotive::Locomotive(float width, float height, float length, float radius) {
 	balks[0].setValues(glm::vec3(0, (-height + radius) / 2, width / 2 + WHEEL_WIDTH + BALK_WIDTH / 2), length - radius, BALK_HEIGHT, BALK_WIDTH, BALK_TEX_NAME, BALK_TEX_COORD);
 	balks[1].setValues(glm::vec3(0, (-height + radius) / 2, -width / 2 - WHEEL_WIDTH - BALK_WIDTH / 2), length - radius, BALK_HEIGHT, BALK_WIDTH, BALK_TEX_NAME, BALK_TEX_COORD);
 	moveX(0);
+	for (int i = 0; i < BALKS_COUNT; ++i) {
+		balks[i].setTranslationX(-(wheels->getRadius() - BALK_HEIGHT)*sin(wheels->getRotation()));
+		balks[i].setTranslationY((wheels->getRadius() - BALK_HEIGHT)*cos(wheels->getRotation()));
+	}
+	speedMultiplier = deltaTime = 0;
+//	translation = glm::vec3(0);
 }
 
 
 void Locomotive::draw(Shader shader, glm::mat4 model) {
 	//glm::mat4 model;
+	if (speedMultiplier != 0) {
+		float move = speedMultiplier * deltaTime;
+		//move *= SPEED_MULTTIPLIER;
+		position.x += move;
+		for (int i = 0; i < WHEELS_COUNT; ++i)
+			wheels[i].rotateX(-move / wheels[i].getRadius());
+		//int cosSign = 1;
+		//if (cos(wheels[0].getRotation()) < 0)
+		//	cosSign = -1;
+
+		for (int i = 0; i < BALKS_COUNT; ++i) {
+			balks[i].setTranslationX(-(wheels->getRadius() - BALK_HEIGHT)*sin(wheels->getRotation()));
+			balks[i].setTranslationY((wheels->getRadius() - BALK_HEIGHT)*cos(wheels->getRotation()));
+		}
+
+	}
+
 	model = glm::scale(model, glm::vec3(0.5, 0.5, 0.5));
 	model = glm::translate(model, position);
 
@@ -45,21 +70,24 @@ void Locomotive::draw(Shader shader, glm::mat4 model) {
 		wheels[i].draw(shader, model);
 	for (int i = 0; i < BALKS_COUNT; ++i)
 		balks[i].draw(shader, model);
+
+	
 }
 
 void Locomotive::moveX(float move) {
-	move *= SPEED_MULTTIPLIER;
-	position.x += move;
-	for (int i = 0; i < WHEELS_COUNT; ++i)
-		wheels[i].rotateX(-move / wheels[i].getRadius());
-	int cosSign = 1;
-	if (cos(wheels[0].getRotation()) < 0)
-		cosSign = -1;
+	speedMultiplier += move;
+	//move *= SPEED_MULTTIPLIER;
+	//position.x += move;
+	//for (int i = 0; i < WHEELS_COUNT; ++i)
+	//	wheels[i].rotateX(-move / wheels[i].getRadius());
+	//int cosSign = 1;
+	//if (cos(wheels[0].getRotation()) < 0)
+	//	cosSign = -1;
 
-	for (int i = 0; i < BALKS_COUNT; ++i) {
-		balks[i].setTranslationX(-(wheels->getRadius() - BALK_HEIGHT)*sin(wheels->getRotation()));
-		balks[i].setTranslationY((wheels->getRadius() - BALK_HEIGHT)*cos(wheels->getRotation()));
-	}
+	//for (int i = 0; i < BALKS_COUNT; ++i) {
+	//	balks[i].setTranslationX(-(wheels->getRadius() - BALK_HEIGHT)*sin(wheels->getRotation()));
+	//	balks[i].setTranslationY((wheels->getRadius() - BALK_HEIGHT)*cos(wheels->getRotation()));
+	//}
 }
 
 Locomotive::~Locomotive() {
