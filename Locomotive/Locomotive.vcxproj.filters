@@ -18,13 +18,22 @@
     <Image Include="black.jpg">
       <Filter>Pliki zasobów</Filter>
     </Image>
-    <Image Include="black.png">
-      <Filter>Pliki zasobów</Filter>
-    </Image>
     <Image Include="deska.png">
       <Filter>Pliki zasobów</Filter>
     </Image>
     <Image Include="kolo.jpg">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="black2.jpg">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="silver.jpg">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="treeTrunk.jpg">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="treeCrown.jpg">
       <Filter>Pliki zasobów</Filter>
     </Image>
   </ItemGroup>
@@ -48,6 +57,15 @@
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
     <ClCompile Include="locomotive.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="simpleCuboid.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="light.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="tree.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
   </ItemGroup>
@@ -76,10 +94,23 @@
     <ClInclude Include="Const.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
+    <ClInclude Include="simpleCuboid.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="light.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="tree.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Lokomotywa.vcxproj" />
     <None Include="locomotive.vert" />
     <None Include="locomotive.frag" />
+    <None Include="light.frag" />
+    <None Include="light.vert" />
+    <None Include="lightedObject.frag" />
+    <None Include="lightedObject.vert" />
   </ItemGroup>
 </Project>
