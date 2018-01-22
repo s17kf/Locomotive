@@ -11,10 +11,10 @@ const float SPEED_INCREASE_STEP = 0.1;
 const unsigned int WHEEL_PIECES = 24;
 const unsigned int WHEELS_COUNT = 4;
 const float WHEEL_WIDTH = 0.22;
-const float WHEEL_RADIUS = 0.5;
+const float WHEEL_RADIUS = 0.3;
 
 const float LOC_WIDTH = 1.2;
-const float LOC_HEIGHT = 0.6;
+const float LOC_HEIGHT = 0.5;
 const float LOC_LENGTH = 2.5;
 
 const float START_X = 0;

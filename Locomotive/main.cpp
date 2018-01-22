@@ -41,6 +41,7 @@ float lastFrame = 0;
 Locomotive *locomotive;
 Light *lamp;
 
+//Locomotive *wagon;
 
 int main()
 {
@@ -104,6 +105,9 @@ int main()
 	Cuboid *platform = new Cuboid(glm::vec3(0, -PLATFORM_HEIGHT / 2,0), PLATFORM_LENGTH, PLATFORM_HEIGHT, PLATFORM_WIDTH, PLATFORM_TEX_NAME, PLATFORM_TEX_COORD);
 	
 	Skybox *skybox = new Skybox(WALLS_TEX_NAMES);
+
+	//wagon = new Locomotive(LOC_WIDTH, LOC_HEIGHT, LOC_LENGTH, WHEEL_RADIUS);
+	//wagon->setPosition(glm::vec3(-LOC_LENGTH - WHEEL_RADIUS, START_Y, START_Z));
 	
 
 	//main loop
@@ -116,6 +120,7 @@ int main()
 		lastFrame = currentFrame;
 
 		locomotive->setDeltaTime(deltaTime);
+		//wagon->setDeltaTime(deltaTime);
 
 		glfwPollEvents();
 		processInput(window);
@@ -142,6 +147,7 @@ int main()
 
 	
 		locomotive->draw(lightedObjectShader, model);
+		//wagon->draw(lightedObjectShader, model);
 
 		for(int i=0;i<TREES_COUNTER_1;++i)
 			trees[i].draw(lightedObjectShader, model);
@@ -152,7 +158,7 @@ int main()
 		lampShader.setMat4("view", view);
 		lampShader.setMat4("projection", projection);
 
-		lamp->draw(lampShader, model);
+		lamp->draw(lampShader, glm::mat4());
 
 		skyboxShader.use();
 		view = glm::mat4(glm::mat3(camera.GetViewMatrix()));
@@ -174,6 +180,7 @@ int main()
 	delete lamp;
 	delete[] trees;
 	delete platform;
+	//delete wagon;
 
 //	system("PAUSE");
 	return 0;
@@ -183,16 +190,22 @@ void processInput(GLFWwindow *window)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
-	
+
 	//locomotive move
-	if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS)
-		locomotive->moveX(- SPEED_INCREASE_STEP);
+	if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS) {
+		locomotive->moveX(-SPEED_INCREASE_STEP);
 		//locomotive->moveX(-deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS)
+		//wagon->moveX(-SPEED_INCREASE_STEP);
+	}
+	if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS) {
 		locomotive->moveX(SPEED_INCREASE_STEP);
 		//locomotive->moveX(deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS)
+		//wagon->moveX(SPEED_INCREASE_STEP);
+	}
+	if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS) {
 		locomotive->stopMoving();
+		//wagon->stopMoving();
+	}
 
 	//camera move
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)

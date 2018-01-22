@@ -25,11 +25,8 @@ public:
 	void moveX(float move);
 	void setDeltaTime(float deltaValue) { deltaTime = deltaValue; }
 	void stopMoving() { speedMultiplier = 0; }
-
-
-
-
-
+	glm::vec3 getPosition() { return position; }
+	void setPosition(glm::vec3 newPosition) { position = newPosition; }
 
 };
 
